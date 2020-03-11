@@ -28,7 +28,7 @@ class Util:
 	def save_massdns_scan_results(self, scan_results):
 		current_dir = pathlib.Path(self.file_path).parent.absolute()
 		massdns_filepath = str(current_dir)+"/massdns_scan_results"
-		file = open(massdns_filepath,"w+")
+		file = open(massdns_filepath,"wb+")
 		file.write(scan_results)
 		file.close()
 		self.read_massdns_output(massdns_filepath)

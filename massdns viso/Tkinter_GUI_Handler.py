@@ -10,7 +10,7 @@ class Tkinter_GUI_Handler:
 	def __init__(self, master):
 		self.current_working_dir = os.getcwd()
 		util = Util(master)
-		util.center(master, "Massdns Viso")
+		util.center(master, "Massdns Viso V0.1")
 		self.master = master	
 
 	def options_menu(self):
