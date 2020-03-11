@@ -41,7 +41,11 @@ class Massdns_Parser:
 		self.tree.heading("resp_name", text="Response Name")
 		self.tree.heading("resp_type", text="Response Type")
 		self.tree.heading("data", text="Data")
-		self.tree.bind('<ButtonRelease-1>', self.selectItem)
+
+
+		#self.tree.bind('<ButtonRelease-1>', self.select_item)
+		self.tree.bind('<ButtonRelease-3>', self.right_click)
+		self.search_box_entry.bind('<Control-KeyRelease-a>', self.select_all)
 
 		self.vsb.pack(side='right', fill='y')
 		self.search_box_entry.pack(side='top', anchor="w", padx=2, pady=2)
@@ -60,7 +64,20 @@ class Massdns_Parser:
 		except:
 			pass
 
-	def selectItem(self, event):
+	def select_all(self, event):
+		# select text
+		event.widget.select_range(0, 'end')
+		# move cursor to the end
+		event.widget.icursor('end')
+
+	def right_click(self, event):
+		event.widget.focus()
+		rmenu = Menu(None, tearoff=0, takefocus=0)
+		rmenu.add_command(label="Copy", command=lambda event=event: self.copy_selected_item(event))
+		rmenu.add_command(label="Copy Row", command=lambda event=event: self.copy_selected_row(event))
+		rmenu.tk_popup(event.x_root, event.y_root,entry="0")
+
+	def copy_selected_item(self, event):
 		curItem = self.tree.item(self.tree.focus())
 		col = self.tree.identify_column(event.x)
 		try:
@@ -74,6 +91,20 @@ class Massdns_Parser:
 				cell_value = curItem['values'][2]
 			elif col == '#4':
 				cell_value = curItem['values'][3]
+
+			item_text = cell_value.replace("'", "")
+			self.copy_to_clipboard(item_text)
+		except:
+			pass
+
+	def copy_selected_row(self, event):
+		curItem = self.tree.item(self.tree.focus())
+		try:
+			cell_value = curItem['text']
+			cell_value += ", " + curItem['values'][0]
+			cell_value += ", " + curItem['values'][1]
+			cell_value += ", " + curItem['values'][2]
+			cell_value += ", " + curItem['values'][3]
 
 			item_text = cell_value.replace("'", "")
 			self.copy_to_clipboard(item_text)
