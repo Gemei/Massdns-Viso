@@ -32,9 +32,12 @@ class Massdns_Parser:
 		self.search_box_entry = Entry(self.master)
 		self.search_button = Button(self.master, text='Search', command=self.search_tree)
 
+		self.search_box_entry.config(background='white',foreground='black')
+		self.search_button.config(foreground='white')
+
 		self.tree["columns"] = ("query_type", "resp_name", "resp_type","data")
 		self.tree.column("query_type", width=50, stretch=NO)
-		self.tree.column("resp_name", width=150)
+		self.tree.column("resp_name", width=100)
 		self.tree.column("resp_type", width=50, stretch=NO)
 		self.tree.column("data", width=150)
 		self.tree.heading("query_type", text="Query Type")
@@ -73,6 +76,7 @@ class Massdns_Parser:
 	def right_click(self, event):
 		event.widget.focus()
 		rmenu = Menu(None, tearoff=0, takefocus=0)
+		rmenu.config(activeforeground='green', foreground='white')
 		rmenu.add_command(label="Copy", command=lambda event=event: self.copy_selected_item(event))
 		rmenu.add_command(label="Copy Row", command=lambda event=event: self.copy_selected_row(event))
 		rmenu.tk_popup(event.x_root, event.y_root,entry="0")

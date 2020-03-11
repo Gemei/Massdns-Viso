@@ -36,7 +36,13 @@ class Tkinter_GUI_Handler:
 
 	def file_explorer(self):
 		self.master.option_add('*foreground', 'red')
-		self.master.filename = filedialog.askopenfilename(initialdir = self.current_working_dir, title = "Select file", filetypes = (("all files","*"),("txt files","*.txt")))
+		options = {}
+		options['filetypes'] = [("all files","*"),("txt files","*.txt")]
+		options['initialdir'] = os.path.realpath(self.current_working_dir)
+		options['initialfile'] = ''
+		options['parent'] = self.master
+		options['title'] = 'Choose a file'
+		self.master.filename = filedialog.askopenfilename(**options)
 		if self.is_not_blank(self.master.filename):
 			self.current_working_dir = pathlib.Path(self.master.filename).parent.absolute()
 			return self.master.filename
